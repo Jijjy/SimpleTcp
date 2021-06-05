@@ -9,9 +9,9 @@ namespace ClientTest
     {
         static string _ServerIp;
         static int _ServerPort;
-        static bool _Ssl;
-        static string _PfxFilename = null;
-        static string _PfxPassword = null;
+        static readonly bool _Ssl;
+        static readonly string _PfxFilename = null;
+        static readonly string _PfxPassword = null;
 
         static SimpleTcpClient _Client;
         static bool _RunForever = true;
@@ -133,13 +133,13 @@ namespace ClientTest
         static void Send()
         {
             string data = InputString("Data:", "Hello!", true);
-            if (!String.IsNullOrEmpty(data)) _Client.Send(data);
+            if (!string.IsNullOrEmpty(data)) _Client.Send(data);
         }
 
         static void SendAsync()
         {
             string data = InputString("Data:", "Hello!", true);
-            if (!String.IsNullOrEmpty(data)) _Client.SendAsync(data).Wait();
+            if (!string.IsNullOrEmpty(data)) _Client.SendAsync(data).Wait();
         }
 
         static void Logger(string msg)
@@ -156,37 +156,22 @@ namespace ClientTest
 
             string userInput = Console.ReadLine();
 
-            if (String.IsNullOrEmpty(userInput))
+            if (string.IsNullOrEmpty(userInput))
             {
-                if (yesDefault) return true;
-                return false;
+                return yesDefault;
             }
 
             userInput = userInput.ToLower();
 
             if (yesDefault)
             {
-                if (
-                    (String.Compare(userInput, "n") == 0)
-                    || (String.Compare(userInput, "no") == 0)
-                   )
-                {
-                    return false;
-                }
-
-                return true;
+                return string.Compare(userInput, "n") != 0
+                    && string.Compare(userInput, "no") != 0;
             }
             else
             {
-                if (
-                    (String.Compare(userInput, "y") == 0)
-                    || (String.Compare(userInput, "yes") == 0)
-                   )
-                {
-                    return true;
-                }
-
-                return false;
+                return (string.Compare(userInput, "y") == 0)
+                    || (string.Compare(userInput, "yes") == 0);
             }
         }
 
@@ -196,7 +181,7 @@ namespace ClientTest
             {
                 Console.Write(question);
 
-                if (!String.IsNullOrEmpty(defaultAnswer))
+                if (!string.IsNullOrEmpty(defaultAnswer))
                 {
                     Console.Write(" [" + defaultAnswer + "]");
                 }
@@ -205,9 +190,9 @@ namespace ClientTest
 
                 string userInput = Console.ReadLine();
 
-                if (String.IsNullOrEmpty(userInput))
+                if (string.IsNullOrEmpty(userInput))
                 {
-                    if (!String.IsNullOrEmpty(defaultAnswer)) return defaultAnswer;
+                    if (!string.IsNullOrEmpty(defaultAnswer)) return defaultAnswer;
                     if (allowNull) return null;
                     else continue;
                 }
@@ -228,7 +213,7 @@ namespace ClientTest
 
                 string userInput = Console.ReadLine();
 
-                if (String.IsNullOrEmpty(userInput))
+                if (string.IsNullOrEmpty(userInput))
                 {
                     if (ret.Count < 1 && !allowEmpty) continue;
                     return ret;
@@ -247,13 +232,12 @@ namespace ClientTest
 
                 string userInput = Console.ReadLine();
 
-                if (String.IsNullOrEmpty(userInput))
+                if (string.IsNullOrEmpty(userInput))
                 {
                     return defaultAnswer;
                 }
 
-                int ret = 0;
-                if (!Int32.TryParse(userInput, out ret))
+                if (!int.TryParse(userInput, out int ret))
                 {
                     Console.WriteLine("Please enter a valid integer.");
                     continue;

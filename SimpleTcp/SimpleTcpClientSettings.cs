@@ -16,10 +16,7 @@ namespace SimpleTcp
         /// </summary>
         public int StreamBufferSize
         {
-            get
-            {
-                return _StreamBufferSize;
-            }
+            get => _StreamBufferSize;
             set
             {
                 if (value < 1) throw new ArgumentException("StreamBufferSize must be one or greater.");
@@ -33,10 +30,7 @@ namespace SimpleTcp
         /// </summary>
         public int ConnectTimeoutMs
         {
-            get
-            {
-                return _ConnectTimeoutMs;
-            }
+            get => _ConnectTimeoutMs;
             set
             {
                 if (value < 1) throw new ArgumentException("ConnectTimeoutMs must be greater than zero.");

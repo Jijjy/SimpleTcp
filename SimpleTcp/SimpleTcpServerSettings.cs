@@ -16,10 +16,7 @@ namespace SimpleTcp
         /// </summary>
         public int StreamBufferSize
         {
-            get
-            {
-                return _StreamBufferSize;
-            }
+            get => _StreamBufferSize;
             set
             {
                 if (value < 1) throw new ArgumentException("StreamBufferSize must be one or greater.");
@@ -36,10 +33,7 @@ namespace SimpleTcp
         /// </summary>
         public int IdleClientTimeoutMs
         {
-            get
-            {
-                return _IdleClientTimeoutMs;
-            }
+            get => _IdleClientTimeoutMs;
             set
             {
                 if (value < 0) throw new ArgumentException("IdleClientTimeoutMs must be zero or greater.");
@@ -52,10 +46,7 @@ namespace SimpleTcp
         /// </summary>
         public int IdleClientEvaluationIntervalMs
         {
-            get
-            {
-                return _IdleClientEvaluationIntervalMs;
-            }
+            get => _IdleClientEvaluationIntervalMs;
             set
             {
                 if (value < 1) throw new ArgumentOutOfRangeException("IdleClientEvaluationIntervalMs must be one or greater.");

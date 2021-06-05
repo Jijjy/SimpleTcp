@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Net;
 using System.Net.Security;
 using System.Net.Sockets;
@@ -11,26 +12,15 @@ namespace SimpleTcp
     {
         #region Public-Members
 
-        internal System.Net.Sockets.TcpClient Client
-        {
-            get { return _TcpClient; }
-        }
-         
-        internal NetworkStream NetworkStream
-        {
-            get { return _NetworkStream; }
-        }
+        internal TcpClient Client { get; private set; } = null;
 
-        internal SslStream SslStream
-        {
-            get { return _SslStream; }
-            set { _SslStream = value; }
-        }
+        internal NetworkStream NetworkStream { get; private set; } = null;
 
-        internal string IpPort
-        {
-            get { return _IpPort; }
-        }
+        internal SslStream SslStream { get; set; } = null;
+
+        internal Stream Stream => (Stream)SslStream ?? NetworkStream;
+
+        internal string IpPort => _IpPort;
 
         internal SemaphoreSlim SendLock = new SemaphoreSlim(1, 1);
         internal SemaphoreSlim ReceiveLock = new SemaphoreSlim(1, 1);
@@ -42,22 +32,19 @@ namespace SimpleTcp
         #endregion
 
         #region Private-Members
-         
-        private System.Net.Sockets.TcpClient _TcpClient = null;
-        private NetworkStream _NetworkStream = null;
-        private SslStream _SslStream = null;
-        private string _IpPort = null; 
+
+        private readonly string _IpPort = null;
 
         #endregion
 
         #region Constructors-and-Factories
 
-        internal ClientMetadata(System.Net.Sockets.TcpClient tcp)
+        internal ClientMetadata(TcpClient tcp)
         {
             if (tcp == null) throw new ArgumentNullException(nameof(tcp));
 
-            _TcpClient = tcp;
-            _NetworkStream = tcp.GetStream();
+            Client = tcp;
+            NetworkStream = tcp.GetStream();
             _IpPort = tcp.Client.RemoteEndPoint.ToString();
             TokenSource = new CancellationTokenSource();
             Token = TokenSource.Token;
@@ -68,7 +55,7 @@ namespace SimpleTcp
         #region Public-Methods
 
         public void Dispose()
-        { 
+        {
             if (TokenSource != null)
             {
                 if (!TokenSource.IsCancellationRequested)
@@ -78,21 +65,10 @@ namespace SimpleTcp
                 }
             }
 
-            if (_SslStream != null)
-            {
-                _SslStream.Close(); 
-            }
-
-            if (_NetworkStream != null)
-            {
-                _NetworkStream.Close(); 
-            }
-
-            if (_TcpClient != null)
-            {
-                _TcpClient.Close();
-                _TcpClient.Dispose(); 
-            } 
+            SslStream?.Close();
+            NetworkStream?.Close();
+            Client?.Close();
+            Client?.Dispose();
         }
 
         #endregion

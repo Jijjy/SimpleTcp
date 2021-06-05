@@ -14,61 +14,31 @@ namespace SimpleTcp
         /// <summary>
         /// The time at which the client or server was started.
         /// </summary>
-        public DateTime StartTime
-        {
-            get
-            {
-                return _StartTime;
-            }
-        }
+        public DateTime StartTime { get; } = DateTime.Now.ToUniversalTime();
 
         /// <summary>
         /// The amount of time which the client or server has been up.
         /// </summary>
-        public TimeSpan UpTime
-        {
-            get
-            {
-                return DateTime.Now.ToUniversalTime() - _StartTime;
-            }
-        }
+        public TimeSpan UpTime => DateTime.Now.ToUniversalTime() - StartTime;
 
         /// <summary>
         /// The number of bytes received.
         /// </summary>
-        public long ReceivedBytes
-        {
-            get
-            {
-                return _ReceivedBytes;
-            }
-            internal set
-            {
-                _ReceivedBytes = value;
-            }
-        }
-         
+        public long ReceivedBytes { get; internal set; } = 0;
+
         /// <summary>
         /// The number of bytes sent.
         /// </summary>
         public long SentBytes
         {
-            get
-            {
-                return _SentBytes;
-            }
-            internal set
-            {
-                _SentBytes = value;
-            }
+            get => _SentBytes;
+            internal set => _SentBytes = value;
         }
-         
+
         #endregion
 
         #region Private-Members
 
-        private DateTime _StartTime = DateTime.Now.ToUniversalTime();
-        private long _ReceivedBytes = 0; 
         private long _SentBytes = 0; 
 
         #endregion
@@ -95,7 +65,7 @@ namespace SimpleTcp
         {
             string ret =
                 "--- Statistics ---" + Environment.NewLine +
-                "    Started        : " + _StartTime.ToString() + Environment.NewLine +
+                "    Started        : " + StartTime.ToString() + Environment.NewLine +
                 "    Uptime         : " + UpTime.ToString() + Environment.NewLine +
                 "    Received bytes : " + ReceivedBytes + Environment.NewLine +
                 "    Sent bytes     : " + SentBytes + Environment.NewLine;
@@ -107,7 +77,7 @@ namespace SimpleTcp
         /// </summary>
         public void Reset()
         {
-            _ReceivedBytes = 0; 
+            ReceivedBytes = 0; 
             _SentBytes = 0; 
         }
 

@@ -28,10 +28,7 @@ namespace SimpleTcp
         /// </summary>
         public int TcpKeepAliveInterval
         {
-            get
-            {
-                return _TcpKeepAliveInterval;
-            }
+            get => _TcpKeepAliveInterval;
             set
             {
                 if (value < 1) throw new ArgumentException("TcpKeepAliveInterval must be greater than zero.");
@@ -45,10 +42,7 @@ namespace SimpleTcp
         /// </summary>
         public int TcpKeepAliveTime
         {
-            get
-            {
-                return _TcpKeepAliveTime;
-            }
+            get => _TcpKeepAliveTime;
             set
             {
                 if (value < 1) throw new ArgumentException("TcpKeepAliveTime must be greater than zero.");
@@ -62,10 +56,7 @@ namespace SimpleTcp
         /// </summary>
         public int TcpKeepAliveRetryCount
         {
-            get
-            {
-                return _TcpKeepAliveRetryCount;
-            }
+            get => _TcpKeepAliveRetryCount;
             set
             {
                 if (value < 1) throw new ArgumentException("TcpKeepAliveRetryCount must be greater than zero.");
